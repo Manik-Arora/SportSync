@@ -11,8 +11,8 @@ export const httpArcjet = arcjetKey
       rules: [
         shield({ mode: arcjetMode }),
         detectBot({
-          mode: arcjet,
-          allow: ["CATEGORY:SEARCH_ENGINE", "CATEGORY:PREVIEW"],
+          mode: arcjetMode,
+          allow: ["CATEGORY:SEARCH_ENGINE", "CATEGORY:PREVIEW", "POSTMAN"],
         }),
         slidingWindow({ mode: arcjetMode, interval: "10s", max: 50 }),
       ],
@@ -25,7 +25,7 @@ export const wsArcjet = arcjetKey
       rules: [
         shield({ mode: arcjetMode }),
         detectBot({
-          mode: arcjet,
+          mode: arcjetMode,
           allow: ["CATEGORY:SEARCH_ENGINE", "CATEGORY:PREVIEW"],
         }),
         slidingWindow({ mode: arcjetMode, interval: "2s", max: 5 }),
@@ -39,6 +39,7 @@ export function securityMiddleware() {
 
     try {
       const decision = await httpArcjet.protect(req);
+      console.log(decision);
 
       if (decision.isDenied()) {
         if (decision.reason.isRateLimit()) {
